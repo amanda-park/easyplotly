@@ -102,7 +102,7 @@ class Interactive_Visuals:
 
         return fig
     
-    def control_chart_ADTK(self, title = "Control Chart Example"):
+    def control_chart_ADTK(self, title = "Control Chart Example", value_name = "Actuals"):
         """Creates a Plotly control chart of a metric measured over time. 
         :param Dataframe df: Required. Data frame fed in should have these columns:
             * date (as index)
@@ -115,18 +115,18 @@ class Interactive_Visuals:
         """
 
         #Create violation criteria
-        df_viol = self._df[self._df["is_violation"] == 1]
-        df_viol_low = df_viol[df_viol["violation_prob"] <= .33]
-        df_viol_med = df_viol[df_viol["violation_prob"] <= .67]
-        df_viol_med = df_viol_med[df_viol_med["violation_prob"] > .33]
-        df_viol_high = df_viol[df_viol["violation_prob"] > .67]
+        df_viol = self._df[self._df["Violation"] > 0]
+        df_viol_low = df_viol[df_viol["Violation"] <= .33]
+        df_viol_med = df_viol[df_viol["Violation"] <= .67]
+        df_viol_med = df_viol_med[df_viol_med["Violation"] > .33]
+        df_viol_high = df_viol[df_viol["Violation"] > .67]
 
         fig = go.Figure(
             data = go.Scatter(
-                name="Actuals",
+                name=value_name,
                 mode="markers+lines", 
                 x=df.index, 
-                y=df["value"],
+                y=df["Values"],
                 marker_symbol="circle", 
                 marker_size = 6,
                 line_color = "blue"
@@ -139,7 +139,7 @@ class Interactive_Visuals:
             name="Median",
             mode="lines", 
             x=df.index, 
-            y=df["median"], 
+            y=df["Median"], 
             line_color = "gray",
             line_width = 2
         ))
@@ -169,7 +169,7 @@ class Interactive_Visuals:
             name = "Violation",
             mode = "markers", 
             x = df_viol.index,
-            y = df_viol["value"],
+            y = df_viol["Values"],
             marker_color = "red",
             marker_size = 12,
             marker_symbol = "circle-open",
@@ -181,7 +181,7 @@ class Interactive_Visuals:
             name = "Low Probability of Violation",
             mode = "markers", 
             x = df_viol_low.index,
-            y = df_viol["value"],
+            y = df_viol["Values"],
             marker_color = "yellow",
             marker_size = 10,
             marker_opacity = .5
@@ -192,7 +192,7 @@ class Interactive_Visuals:
             name = "Medium Probability of Violation",
             mode = "markers", 
             x = df_viol_med.index,
-            y = df_viol_med["value"],
+            y = df_viol_med["Values"],
             marker_color = "orange",
             marker_size = 10,
             marker_opacity = .5
@@ -203,7 +203,7 @@ class Interactive_Visuals:
             name = "High Probability of Violation",
             mode = "markers", 
             x = df_viol_high.index,
-            y = df_viol_high["value"],
+            y = df_viol_high["Values"],
             marker_color = "red",
             marker_size = 10,
             marker_opacity = .5
@@ -216,17 +216,16 @@ if __name__ == '__main__':
     #df = px.data.iris()
     #Test to see if Plotly SPC Chart works
     df = pd.DataFrame(dict(
-        date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
-        value=[1,2,3,1,2,4, 5],
-        median = [2,2,2,2,2,2,2],
+        Date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
+        Values=[1,2,3,1,2,4, 5],
+        Median = [2,2,2,2,2,2,2],
         UCL = [3,3,3,3,3,3,3],
         LCL = [1,1,1,1,1,1,1],
-        is_violation = [0, 0, 0, 0, 0, 1, 1],
-        violation_prob = [0,0,0,0,0,.5, .9]
+        Violation = [0,0,0,0,0,.5, .9]
     ))
 
     #Pandas set date to index col (will be how ingested from ADTK)
-    df = df.set_index("date")
+    df = df.set_index("Date")
     plt = Interactive_Visuals(df)
     plot(plt.control_chart_ADTK(title = "Anomaly Detection Graph"))
 
