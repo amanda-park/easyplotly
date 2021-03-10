@@ -32,6 +32,8 @@ For creating control charts, the data frame must contain variables named the sam
   iv = Interactive_Visuals(df)
   plot(iv.control_chart_ADTK(title = "Anomaly Detection Graph"))
 
+.. image:: images/Control_Chart.png
+   :width: 800
 
 ===========
 Scatterplot
@@ -49,13 +51,19 @@ To obtain a very basic scatterplot, run this:
 .. code-block:: Python
 
   plot(iv.scatterplot(x = "sepal_length", y = "sepal_width"))
-  
+
+.. image:: images/Scatterplot_Basic.png
+   :width: 800
+
 To create a scatterplot with a marginal box plot, run the following:
 
 .. code-block:: Python
 
   plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box"))
-    
+
+.. image:: images/Scatterplot_Marginal.png
+   :width: 800
+
 (Note that histograms or violin plots can also be plotted in the margins.)
 
 Scatterplots can be labeled based on a factor variable:
@@ -63,31 +71,46 @@ Scatterplots can be labeled based on a factor variable:
 .. code-block:: Python
 
   plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species"))
+
+.. image:: images/Scatterplot_Marginal_Factor.png
+   :width: 800
   
 Or a numeric variable:
 
 .. code-block:: Python
 
   plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "petal_width"))
-  
+
+.. image:: images/Scatterplot_Marginal_Numeric.png
+   :width: 800
+
 If points overlap, jitter can be applied. If the default jitter is unsatisfactory, the value can be changed with jitter_sd:
 
 .. code-block:: Python
 
   plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species", jitter = True))
-  
+
+.. image:: images/Scatterplot_Marginal_Jitter.png
+   :width: 800
+
 Opacity can also be lowered for points closeby to be more easily seen:
 
 .. code-block:: Python
 
-  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species", jitter = True, opacity = .8))
-  
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species", jitter = True, opacity = .5))
+
+.. image:: images/Scatterplot_Marginal_Opacity.png
+   :width: 800
+
 Trendlines can also be added:
 
 .. code-block:: Python
 
   plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species", jitter = True, opacity = .8, trendline = "ols"))
-  
+
+.. image:: images/Scatterplot_Marginal_Trendline.png
+   :width: 800
+
 =======================
 Histogram and Bar Plots
 =======================
@@ -97,10 +120,16 @@ A basic bar plot can be created by using a numeric variable:
 .. code-block:: Python
 
   plot(iv.histogram(x = "sepal_length"))   
-  
+
+.. image:: images/Barplot_Basic.png
+   :width: 800
+ 
 A basic histogram can be created by using a categorical variable:
 
 .. code-block:: Python
 
   plot(iv.histogram(x = "species"))
-  
+
+.. image:: images/Histogram_Basic.png
+   :width: 800
+

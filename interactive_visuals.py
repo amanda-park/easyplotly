@@ -268,19 +268,4 @@ class Interactive_Visuals:
 if __name__ == '__main__':    
     df = px.data.iris()
     iv = Interactive_Visuals(df)
-    plot(iv.histogram(x = "species", is_horizontal = True))    
-    #Test to see if Plotly SPC Chart works
-    # df = pd.DataFrame(dict(
-    #     Date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
-    #     Values=[1,2,3,1,2,4, 5],
-    #     Median = [2,2,2,2,2,2,2],
-    #     UCL = [3,3,3,3,3,3,3],
-    #     LCL = [1,1,1,1,1,1,1],
-    #     Violation = [0,0,0,0,0,.5, .9]
-    # ))
-
-    # #Pandas set date to index col (will be how ingested from ADTK)
-    # df = df.set_index("Date")
-    # iv = Interactive_Visuals(df)
-    # plot(iv.control_chart_ADTK(title = "Anomaly Detection Graph"))
-
+    plot(iv.histogram(x = "sepal_length"))
