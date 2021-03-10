@@ -6,7 +6,13 @@ from plotly.offline import plot
 from utils import *
 
 class Interactive_Visuals:
-    """This class allows creating dynamic visualizations that match ggplot's format.
+    """This class allows creating dynamic visualizations that match ggplot's format. Current options include the following:
+        
+        * Histogram 
+        * Bar chart (under histogram)
+        * Scatterplot
+        * Line chart
+        * Control chart
     """
     
     def __init__(self, df):
@@ -15,16 +21,28 @@ class Interactive_Visuals:
     def histogram(self, x = "Predictor", y = None, color = None, facet_col = None, facet_row = None, 
                   bins = 20, opacity = 1, marginal = None, template = "ggplot2"):
         """Creates a Plotly histogram. Plotly histograms can work with both numeric and categorical data.
+        
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
+        
         :param str x: Required. The name of a **numeric** variable in the data frame you want to be your predictor.
+        
         :param str y: Optional, default None.
+        
         :param str color: Optional; default None. A factor variable that you want to visualize your histogram.
+        
         :param str facet_col: Optional; default None. A factor variable you want to facet your histogram on vertically.
+        
         :param str facet_row: Optional; default None. A factor variable you want to facet your histogram on horizontally.
+        
         :param int bins: Optional; default 20. The number of bins you want your histogram to have.
+        
         :param float opacity: Optional, default 1. The opacity of the bars in the histogram. Can be set between 0 and 1.
+        
         :param str marginal: Optional; default None. Can set to "rug", "box", or "violin".
+        
         :param str template: Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.
+        
+        :returns: Plotly fig object
         """
         x_clean, df_clean = clean_varname(self._df, var = x)
 
@@ -54,17 +72,30 @@ class Interactive_Visuals:
     def scatterplot(self, x = "Predictor", y = "Response", color = None, jitter = False, jitter_sd = .1,
                 marg_x = None, marg_y = None, trendline = None, opacity = 1, template = "ggplot2"):
         """Creates a Plotly scatter plot of two numeric variables.
+        
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
+        
         :param str x: Required. The name of a **numeric** variable in the data frame you want to be your predictor.
+        
         :param str y: Required. The name of a **numeric** variable in the data frame you want to be your response.
+        
         :param bool jitter: Optional; default False. Setting to true adds noise to data to stop points from overlapping on each other.
+        
         :param float jitter_sd: Optional; default .1. Determines the variability of random noise applied to your data.
+        
         :param str color: Optional; default None. A variable that you want to visualize your scatterplot across. Can be numeric or factor.
+        
         :param str marg_x: Optional; default None. Set to either "histogram", "box", "rug", or "violin" to visualize distribution of x variable.
+        
         :param str marg_y: Optional; default None. Set to either "histogram", "box", "rug", or "violin" to visualize distribution of y variable.
+        
         :param float opacity: Optional, default 1. The opacity of the bars in the histogram. Can be set between 0 and 1.
+        
         :param str trendline: Optional, default None. Sets a trendline for scatterplot if "ols" is chosen. If categorical color chosen, will fit OLS to each factor of color.
+        
         :param str template: Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.
+        
+        :returns: Plotly fig object.
         """
         x_clean, df_clean = clean_varname(self._df, var = x)
         y_clean, df_clean = clean_varname(df_clean, var = y)
@@ -84,11 +115,18 @@ class Interactive_Visuals:
     
     def linechart(self, x = "Predictor", y = "Response", color = None, template = "ggplot2"):
         """Creates a Plotly line chart of a numeric and date variable
+        
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
+        
         :param str x: Required. The name of a **date** variable in the data frame you want to be your predictor.
+        
         :param str y: Required. The name of a **numeric** variable in the data frame you want to be your response.
+        
         :param str color: Optional; default None. A variable that you want to visualize your scatterplot across. Can be numeric or factor.
+        
         :param str template: Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.
+        
+        :returns: Plotly fig object.
         """
         x_clean, df_clean = clean_varname(self._df, var = x)
         y_clean, df_clean = clean_varname(df_clean, var = y)
@@ -104,14 +142,21 @@ class Interactive_Visuals:
     
     def control_chart_ADTK(self, title = "Control Chart Example", value_name = "Actuals"):
         """Creates a Plotly control chart of a metric measured over time. 
+        
         :param Dataframe df: Required. Data frame fed in should have these columns:
-            * date (as index)
-            * value
-            * median
+            
+            * Date (as index)
+            * Values
+            * Median
             * UCL
             * LCL
-            * is_violation (binary 0/1 that represents if a point violates expectations according to SPC/Anomaly detection principles)
-            * violation_prob (value between 0 and 1 returning the probability of a point being an outlier)
+            * Violation (value between 0 and 1 returning the probability of a point being an outlier)
+            
+        :param str title: A string that will define the title of your Control Chart. Default is "Control Chart Example".
+        
+        :param str value_name: A string that represent the name of the values in the control chart. Default is "Actuals".
+        
+        :returns: Plotly fig object.
         """
 
         #Create violation criteria
@@ -226,6 +271,6 @@ if __name__ == '__main__':
 
     #Pandas set date to index col (will be how ingested from ADTK)
     df = df.set_index("Date")
-    plt = Interactive_Visuals(df)
-    plot(plt.control_chart_ADTK(title = "Anomaly Detection Graph"))
+    iv = Interactive_Visuals(df)
+    plot(iv.control_chart_ADTK(title = "Anomaly Detection Graph"))
 
