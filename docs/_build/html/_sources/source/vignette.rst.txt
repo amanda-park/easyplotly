@@ -1,0 +1,106 @@
+Vignette
+========
+
+Sample code showing how to use the Interactive Visuals repo.
+
+First, you will want to import the following:
+
+.. code-block:: Python
+
+  from interactive_visuals import *
+
+
+=============
+Control Chart
+=============
+
+For creating control charts, the data frame must contain variables named the same as in the example below. Make sure the Date variable is set to the index if it isn't already (ADTK will do this by default). Load in the Interactive_Visuals class and then call the plot function.
+
+.. code-block:: Python
+
+  df = pd.DataFrame(dict(
+          Date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
+          Values=[1,2,3,1,2,4, 5],
+          Median = [2,2,2,2,2,2,2],
+          UCL = [3,3,3,3,3,3,3],
+          LCL = [1,1,1,1,1,1,1],
+          Violation = [0,0,0,0,0,.5, .9]
+      ))
+  
+  #Pandas set date to index col (will be how ingested from ADTK)
+  df = df.set_index("Date")
+  iv = Interactive_Visuals(df)
+  plot(iv.control_chart_ADTK(title = "Anomaly Detection Graph"))
+
+
+===========
+Scatterplot
+===========
+
+There are a few variations on what can be done with a scatter plot. First you will want to load in a data frame (here, we'll be using the infamous iris dataset).
+
+.. code-block:: Python
+
+  df = px.data.iris()
+  iv = Interactive_Visuals(df)
+  
+To obtain a very basic scatterplot, run this:
+
+.. code-block:: Python
+
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width"))
+  
+To create a scatterplot with a marginal box plot, run the following:
+
+.. code-block:: Python
+
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box"))
+    
+(Note that histograms or violin plots can also be plotted in the margins.)
+
+Scatterplots can be labeled based on a factor variable:
+
+.. code-block:: Python
+
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species"))
+  
+Or a numeric variable:
+
+.. code-block:: Python
+
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "petal_width"))
+  
+If points overlap, jitter can be applied. If the default jitter is unsatisfactory, the value can be changed with jitter_sd:
+
+.. code-block:: Python
+
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species", jitter = True))
+  
+Opacity can also be lowered for points closeby to be more easily seen:
+
+.. code-block:: Python
+
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species", jitter = True, opacity = .8))
+  
+Trendlines can also be added:
+
+.. code-block:: Python
+
+  plot(iv.scatterplot(x = "sepal_length", y = "sepal_width", marg_x = "box", marg_y = "box", color = "species", jitter = True, opacity = .8, trendline = "ols"))
+  
+=======================
+Histogram and Bar Plots
+=======================
+
+A basic bar plot can be created by using a numeric variable:
+
+.. code-block:: Python
+
+  plot(iv.histogram(x = "sepal_length"))   
+  
+A basic histogram can be created by using a categorical variable:
+
+.. code-block:: Python
+
+  plot(iv.histogram(x = "species"))
+  

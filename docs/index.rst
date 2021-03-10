@@ -11,6 +11,7 @@ Welcome to Interactive Visualizations with Plotly's documentation!
 
    source/interactive_visuals
    source/utils
+   source/vignette
 
 
 

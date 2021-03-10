@@ -5,21 +5,18 @@ This repo has some Python functions that make creating interactive visualization
   * Marginal distributions for the scatter plots are included!
 * Bar charts
   * These charts can adapt based on variables fed in to become histograms as well!
-* Statistical Process Control (SPC) and Anomaly Detection graphs
-  * Framework for Anomaly Detection can be found [here](https://bitbucket.spectrum-health.org:7991/stash/projects/QSE/repos/adtk/browse)
+* Control Charts Formatted for ADTK
+  * Anomaly Detection repo can be found [here](https://bitbucket.spectrum-health.org:7991/stash/projects/QSE/repos/adtk/browse)
 * Line charts
 
+This repo has an OOP/Class structure with documentation written in Sphinx (seen in the docs/ folder). 
 
 ## Installation
 
-The main pip install you will need to make is to add the plotly library to your environment:
+Install plotly to your Python environment:
 
 ```bash
 pip install plotly
-
 ```
 Then you can import the functions as needed for creating interactive visualizations.
 
-## To-Do
-
-* Convert to a class/OOP structure

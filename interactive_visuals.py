@@ -18,15 +18,17 @@ class Interactive_Visuals:
     def __init__(self, df):
         self._df = df
     
-    def histogram(self, x = "Predictor", y = None, color = None, facet_col = None, facet_row = None, 
+    def histogram(self, x = "Predictor", y = None, is_horizontal = False, color = None, facet_col = None, facet_row = None, 
                   bins = 20, opacity = 1, marginal = None, template = "ggplot2"):
         """Creates a Plotly histogram. Plotly histograms can work with both numeric and categorical data.
         
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
         
-        :param str x: Required. The name of a **numeric** variable in the data frame you want to be your predictor.
+        :param str x: Required. The name of a variable in the data frame you want to be your predictor.
         
         :param str y: Optional, default None.
+        
+        :param bool is_horizontal: Optional, default False. Will swap x and y values so that the plot appears horizontally.
         
         :param str color: Optional; default None. A factor variable that you want to visualize your histogram.
         
@@ -63,6 +65,12 @@ class Interactive_Visuals:
             facet_row_clean, df_clean = clean_varname(df_clean, var = facet_row)
         else:
             facet_row_clean = facet_row
+
+        if is_horizontal:
+            save_y = y_clean
+            save_x = x_clean
+            x_clean = save_y
+            y_clean = save_x
 
         fig = px.histogram(df_clean, x=x_clean, y = y_clean, color=color_clean, title = "Histogram of %s"%(x_clean),
                         marginal = marginal, template = template, opacity = opacity, nbins=bins, facet_col = facet_col_clean,
@@ -170,8 +178,8 @@ class Interactive_Visuals:
             data = go.Scatter(
                 name=value_name,
                 mode="markers+lines", 
-                x=df.index, 
-                y=df["Values"],
+                x=self._df.index, 
+                y=self._df["Values"],
                 marker_symbol="circle", 
                 marker_size = 6,
                 line_color = "blue"
@@ -183,8 +191,8 @@ class Interactive_Visuals:
         fig.add_trace(go.Scatter(
             name="Median",
             mode="lines", 
-            x=df.index, 
-            y=df["Median"], 
+            x=self._df.index, 
+            y=self._df["Median"], 
             line_color = "gray",
             line_width = 2
         ))
@@ -192,8 +200,8 @@ class Interactive_Visuals:
         fig.add_trace(go.Scatter(
             name="Control Limits",
             mode="lines", 
-            x=df.index, 
-            y=df["UCL"], 
+            x=self._df.index, 
+            y=self._df["UCL"], 
             line_color = "black",
             line_dash = "dash",
             line_width = 2
@@ -203,8 +211,8 @@ class Interactive_Visuals:
             name="LCL",
             mode="lines", 
             showlegend = False,
-            x=df.index, 
-            y=df["LCL"], 
+            x=self._df.index, 
+            y=self._df["LCL"], 
             line_color = "black",
             line_dash = "dash",
             line_width = 2
@@ -258,19 +266,21 @@ class Interactive_Visuals:
         return fig
 
 if __name__ == '__main__':    
-    #df = px.data.iris()
-    #Test to see if Plotly SPC Chart works
-    df = pd.DataFrame(dict(
-        Date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
-        Values=[1,2,3,1,2,4, 5],
-        Median = [2,2,2,2,2,2,2],
-        UCL = [3,3,3,3,3,3,3],
-        LCL = [1,1,1,1,1,1,1],
-        Violation = [0,0,0,0,0,.5, .9]
-    ))
-
-    #Pandas set date to index col (will be how ingested from ADTK)
-    df = df.set_index("Date")
+    df = px.data.iris()
     iv = Interactive_Visuals(df)
-    plot(iv.control_chart_ADTK(title = "Anomaly Detection Graph"))
+    plot(iv.histogram(x = "species", is_horizontal = True))    
+    #Test to see if Plotly SPC Chart works
+    # df = pd.DataFrame(dict(
+    #     Date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
+    #     Values=[1,2,3,1,2,4, 5],
+    #     Median = [2,2,2,2,2,2,2],
+    #     UCL = [3,3,3,3,3,3,3],
+    #     LCL = [1,1,1,1,1,1,1],
+    #     Violation = [0,0,0,0,0,.5, .9]
+    # ))
+
+    # #Pandas set date to index col (will be how ingested from ADTK)
+    # df = df.set_index("Date")
+    # iv = Interactive_Visuals(df)
+    # plot(iv.control_chart_ADTK(title = "Anomaly Detection Graph"))
 
