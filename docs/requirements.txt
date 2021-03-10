@@ -1,5 +1,3 @@
-plotly.express
+plotly
 numpy
-plotly.graph_objects
 pandas
-plotly.offline
