@@ -89,7 +89,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vignette</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#control-chart">Control Chart</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scatterplot">Scatterplot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#histogram-and-bar-plots">Histogram and Bar Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#histogram">Histogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bar-plot">Bar Plot</a></li>
 </ul>
 </li>
 </ul>
@@ -230,18 +231,61 @@
 </div>
 <a class="reference internal image-reference" href="../_images/Scatterplot_Marginal_Trendline.png"><img alt="../_images/Scatterplot_Marginal_Trendline.png" src="../_images/Scatterplot_Marginal_Trendline.png" style="width: 800px;" /></a>
 </div>
-<div class="section" id="histogram-and-bar-plots">
-<h2>Histogram and Bar Plots<a class="headerlink" href="#histogram-and-bar-plots" title="Permalink to this headline">¶</a></h2>
-<p>A basic bar plot can be created by using a numeric variable:</p>
+<div class="section" id="histogram">
+<h2>Histogram<a class="headerlink" href="#histogram" title="Permalink to this headline">¶</a></h2>
+<p>A basic histogram can be created by using a numeric variable:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sepal_length&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/Barplot_Basic.png"><img alt="../_images/Barplot_Basic.png" src="../_images/Barplot_Basic.png" style="width: 800px;" /></a>
-<p>A basic histogram can be created by using a categorical variable:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">))</span>
+<a class="reference internal image-reference" href="../_images/Histogram_Basic.png"><img alt="../_images/Histogram_Basic.png" src="../_images/Histogram_Basic.png" style="width: 800px;" /></a>
+<p>This histogram can be split based on a categorical variable:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sepal_length&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/Histogram_Basic.png"><img alt="../_images/Histogram_Basic.png" src="../_images/Histogram_Basic.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/Histogram_Factor.png"><img alt="../_images/Histogram_Factor.png" src="../_images/Histogram_Factor.png" style="width: 800px;" /></a>
+<p>The marginal distributions can be shown above the histogram:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sepal_length&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">marginal</span><span class="o">=</span><span class="s2">&quot;box&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Histogram_Marginal.png"><img alt="../_images/Histogram_Marginal.png" src="../_images/Histogram_Marginal.png" style="width: 800px;" /></a>
+<p>And the plots can be faceted either vertically or horizontally for readability:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sepal_length&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">facet_col</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">marginal</span><span class="o">=</span><span class="s2">&quot;box&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Histogram_Facet.png"><img alt="../_images/Histogram_Facet.png" src="../_images/Histogram_Facet.png" style="width: 800px;" /></a>
+<p>The number of bins is also customizable:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sepal_length&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">facet_col</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">marginal</span> <span class="o">=</span> <span class="s2">&quot;box&quot;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Histogram_Bins.png"><img alt="../_images/Histogram_Bins.png" src="../_images/Histogram_Bins.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="bar-plot">
+<h2>Bar Plot<a class="headerlink" href="#bar-plot" title="Permalink to this headline">¶</a></h2>
+<p>For bar plots we will use a dataset where more categorical variables are included:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tips</span><span class="p">()</span>
+<span class="n">iv</span> <span class="o">=</span> <span class="n">Interactive_Visuals</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A basic bar plot can be created by using a categorical variable:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Barplot_Basic.png"><img alt="../_images/Barplot_Basic.png" src="../_images/Barplot_Basic.png" style="width: 800px;" /></a>
+<p>Stacked bar plots can be created by setting a categorical variable to color:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;smoker&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Barplot_Stacked.png"><img alt="../_images/Barplot_Stacked.png" src="../_images/Barplot_Stacked.png" style="width: 800px;" /></a>
+<p>These can also be set as grouped bar plots:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;smoker&quot;</span><span class="p">,</span> <span class="n">barmode</span> <span class="o">=</span> <span class="s2">&quot;group&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Barplot_Grouped.png"><img alt="../_images/Barplot_Grouped.png" src="../_images/Barplot_Grouped.png" style="width: 800px;" /></a>
+<p>Bars can also be set horizontally:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;smoker&quot;</span><span class="p">,</span> <span class="n">is_horizontal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Barplot_Horizontal.png"><img alt="../_images/Barplot_Horizontal.png" src="../_images/Barplot_Horizontal.png" style="width: 800px;" /></a>
 </div>
 </div>
 

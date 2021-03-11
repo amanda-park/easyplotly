@@ -164,11 +164,33 @@
 <p>This class allows creating dynamic visualizations that match ggplot’s format. Current options include the following:</p>
 <ul class="simple">
 <li><p>Histogram</p></li>
-<li><p>Bar chart (under histogram)</p></li>
+<li><p>Bar chart</p></li>
 <li><p>Scatterplot</p></li>
 <li><p>Line chart</p></li>
 <li><p>Control chart</p></li>
 </ul>
+<dl class="py method">
+<dt id="interactive_visuals.Interactive_Visuals.barplot">
+<code class="sig-name descname"><span class="pre">barplot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Predictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ggplot2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barmode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'stack'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_horizontal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interactive_visuals.Interactive_Visuals.barplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Plotly bar plot. Bar plots work with categorical data. Function computes appropriate counts and percentages to create bar plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>Dataframe</em>) – Required. A Pandas dataframe for plotting the data.</p></li>
+<li><p><strong>x</strong> (<em>str</em>) – Required. The name of a categorical variable in the data frame you want to be your predictor.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Optional; default None. A factor variable that you want to visualize your bar plot.</p></li>
+<li><p><strong>is_horizontal</strong> (<em>bool</em>) – Optional, default False. Will swap x and y values so that the plot appears horizontally.</p></li>
+<li><p><strong>opacity</strong> (<em>float</em>) – Optional, default 1. The opacity of the bars in the histogram. Can be set between 0 and 1.</p></li>
+<li><p><strong>template</strong> (<em>str</em>) – Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.</p></li>
+<li><p><strong>barmode</strong> (<em>str</em>) – Optional, default “stack”. Options: [‘stack’, ‘group’, ‘overlay’, ‘relative’]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Plotly fig object</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="interactive_visuals.Interactive_Visuals.control_chart_ADTK">
 <code class="sig-name descname"><span class="pre">control_chart_ADTK</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Control</span> <span class="pre">Chart</span> <span class="pre">Example'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Actuals'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interactive_visuals.Interactive_Visuals.control_chart_ADTK" title="Permalink to this definition">¶</a></dt>
@@ -204,8 +226,8 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df</strong> (<em>Dataframe</em>) – Required. A Pandas dataframe for plotting the data.</p></li>
-<li><p><strong>x</strong> (<em>str</em>) – Required. The name of a variable in the data frame you want to be your predictor.</p></li>
-<li><p><strong>y</strong> (<em>str</em>) – Optional, default None.</p></li>
+<li><p><strong>x</strong> (<em>str</em>) – Required. The name of a numeric variable in the data frame you want to be your predictor.</p></li>
+<li><p><strong>y</strong> (<em>str</em>) – Optional, default None. <strong>Using this may give weird and unexpected results, as Plotly tries to adapt to data fed in!</strong></p></li>
 <li><p><strong>is_horizontal</strong> (<em>bool</em>) – Optional, default False. Will swap x and y values so that the plot appears horizontally.</p></li>
 <li><p><strong>color</strong> (<em>str</em>) – Optional; default None. A factor variable that you want to visualize your histogram.</p></li>
 <li><p><strong>facet_col</strong> (<em>str</em>) – Optional; default None. A factor variable you want to facet your histogram on vertically.</p></li>

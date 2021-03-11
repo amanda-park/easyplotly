@@ -111,25 +111,98 @@ Trendlines can also be added:
 .. image:: images/Scatterplot_Marginal_Trendline.png
    :width: 800
 
-=======================
-Histogram and Bar Plots
-=======================
+=========
+Histogram
+=========
 
-A basic bar plot can be created by using a numeric variable:
+A basic histogram can be created by using a numeric variable:
 
 .. code-block:: Python
 
   plot(iv.histogram(x = "sepal_length"))   
 
-.. image:: images/Barplot_Basic.png
-   :width: 800
- 
-A basic histogram can be created by using a categorical variable:
-
-.. code-block:: Python
-
-  plot(iv.histogram(x = "species"))
-
 .. image:: images/Histogram_Basic.png
    :width: 800
 
+This histogram can be split based on a categorical variable:
+
+.. code-block:: Python
+
+  plot(iv.histogram(x = "sepal_length", color = "species"))  
+
+.. image:: images/Histogram_Factor.png
+   :width: 800
+
+The marginal distributions can be shown above the histogram:
+
+.. code-block:: Python
+
+  plot(iv.histogram(x = "sepal_length", color = "species", marginal="box"))  
+
+.. image:: images/Histogram_Marginal.png
+   :width: 800
+
+And the plots can be faceted either vertically or horizontally for readability:
+
+.. code-block:: Python
+
+  plot(iv.histogram(x = "sepal_length", color = "species", facet_col = "species", marginal="box")) 
+
+.. image:: images/Histogram_Facet.png
+   :width: 800
+
+The number of bins is also customizable:
+
+.. code-block:: Python
+
+  plot(iv.histogram(x = "sepal_length", color = "species", facet_col = "species", marginal = "box", bins = 10)) 
+
+.. image:: images/Histogram_Bins.png
+   :width: 800
+
+========
+Bar Plot
+========
+
+For bar plots we will use a dataset where more categorical variables are included:
+
+.. code-block:: Python
+
+  df = px.data.tips()
+  iv = Interactive_Visuals(df)
+
+A basic bar plot can be created by using a categorical variable:
+
+.. code-block:: Python
+
+  plot(iv.barplot(x = "sex"))
+
+.. image:: images/Barplot_Basic.png
+   :width: 800
+
+Stacked bar plots can be created by setting a categorical variable to color:
+
+.. code-block:: Python
+
+  plot(iv.barplot(x = "sex", color = "smoker"))
+
+.. image:: images/Barplot_Stacked.png
+   :width: 800
+   
+These can also be set as grouped bar plots:
+
+.. code-block:: Python
+
+  plot(iv.barplot(x = "sex", color = "smoker", barmode = "group"))
+
+.. image:: images/Barplot_Grouped.png
+   :width: 800
+   
+Bars can also be set horizontally:
+
+.. code-block:: Python
+
+  plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True))
+
+.. image:: images/Barplot_Horizontal.png
+   :width: 800

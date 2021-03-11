@@ -9,7 +9,7 @@ class Interactive_Visuals:
     """This class allows creating dynamic visualizations that match ggplot's format. Current options include the following:
         
         * Histogram 
-        * Bar chart (under histogram)
+        * Bar chart
         * Scatterplot
         * Line chart
         * Control chart
@@ -24,9 +24,9 @@ class Interactive_Visuals:
         
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
         
-        :param str x: Required. The name of a variable in the data frame you want to be your predictor.
+        :param str x: Required. The name of a numeric variable in the data frame you want to be your predictor.
         
-        :param str y: Optional, default None.
+        :param str y: Optional, default None. **Using this may give weird and unexpected results, as Plotly tries to adapt to data fed in!**
         
         :param bool is_horizontal: Optional, default False. Will swap x and y values so that the plot appears horizontally.
         
@@ -67,15 +67,68 @@ class Interactive_Visuals:
             facet_row_clean = facet_row
 
         if is_horizontal:
-            save_y = y_clean
-            save_x = x_clean
-            x_clean = save_y
-            y_clean = save_x
-
-        fig = px.histogram(df_clean, x=x_clean, y = y_clean, color=color_clean, title = "Histogram of %s"%(x_clean),
-                        marginal = marginal, template = template, opacity = opacity, nbins=bins, facet_col = facet_col_clean,
-                          facet_row = facet_row_clean)
+            fig = px.histogram(df_clean, y=x_clean, x = y_clean, color=color_clean, title = f"Histogram of {x_clean}",
+                            marginal = marginal, template = template, opacity = opacity, nbins=bins, facet_col = facet_col_clean,
+                              facet_row = facet_row_clean)
+        else:
+            fig = px.histogram(df_clean, x=x_clean, y = y_clean, color=color_clean, title = f"Histogram of {x_clean}",
+                            marginal = marginal, template = template, opacity = opacity, nbins=bins, facet_col = facet_col_clean,
+                              facet_row = facet_row_clean)
         return fig
+    
+    def barplot(self, x = "Predictor", color = None, opacity = 1, template = "ggplot2", barmode="stack", is_horizontal = False):
+        """Creates a Plotly bar plot. Bar plots work with categorical data. Function computes appropriate counts and percentages to create bar plots.
+        
+        :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
+        
+        :param str x: Required. The name of a categorical variable in the data frame you want to be your predictor.
+                        
+        :param str color: Optional; default None. A factor variable that you want to visualize your bar plot.
+        
+        :param bool is_horizontal: Optional, default False. Will swap x and y values so that the plot appears horizontally.
+
+        :param float opacity: Optional, default 1. The opacity of the bars in the histogram. Can be set between 0 and 1.
+                
+        :param str template: Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.
+        
+        :param str barmode: Optional, default "stack". Options: ['stack', 'group', 'overlay', 'relative']
+        
+        :returns: Plotly fig object
+        """
+        if color: #Produce either a stacked or grouped bar plot
+            df_stack = self._df.groupby([x,color]).size().reset_index()
+            df_stack['Percentage'] = self._df.groupby([x, color]).size().groupby(level = 0).apply(lambda 
+        x:100 * x/float(x.sum())).values
+            df_stack.columns = [x, color, 'Count', 'Percentage']
+            x_clean, df_clean = clean_varname(df_stack, var = x)
+            color_clean, df_clean = clean_varname(df_clean, var = color)
+            
+            if is_horizontal:
+                fig = px.bar(df_clean, y = x_clean, x = 'Count', 
+                             color = color_clean, template = template, barmode=barmode, 
+                         opacity = opacity, title = f"Bar plot of {x_clean} and {color_clean}")
+            else:
+               fig = px.bar(df_clean, x = x_clean, y = 'Count', 
+                            color = color_clean, template = template, barmode=barmode, 
+                         opacity = opacity, title = f"Bar plot of {x_clean} and {color_clean}") 
+            
+            return fig
+        
+        else: #Create a basic bar plot
+           df_stack = self._df.groupby([x]).size().reset_index()
+           df_stack['Percentage'] = self._df.groupby([x]).size().groupby(level = 0).apply(lambda 
+   x:100 * x/float(x.sum())).values
+           df_stack.columns = [x, 'Count', 'Percentage']
+           x_clean, df_clean = clean_varname(df_stack, var = x)
+           
+           if is_horizontal:
+               fig = px.bar(df_clean, y = x_clean, x = 'Count', 
+                            template = template, title = f"Bar plot of {x_clean}")
+           else:
+               fig = px.bar(df_clean, x = x_clean, y = 'Count', 
+                            template = template, title = f"Bar plot of {x_clean}")
+           return fig 
+        
     
     def scatterplot(self, x = "Predictor", y = "Response", color = None, jitter = False, jitter_sd = .1,
                 marg_x = None, marg_y = None, trendline = None, opacity = 1, template = "ggplot2"):
@@ -268,4 +321,8 @@ class Interactive_Visuals:
 if __name__ == '__main__':    
     df = px.data.iris()
     iv = Interactive_Visuals(df)
-    plot(iv.histogram(x = "sepal_length"))
+    plot(iv.histogram(x = "sepal_length", color = "species", facet_col = "species", marginal="box", bins = 10))
+    # df = px.data.tips()
+    # iv = Interactive_Visuals(df)
+    # plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True))
+    
