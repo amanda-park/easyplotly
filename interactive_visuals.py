@@ -19,7 +19,7 @@ class Interactive_Visuals:
         self._df = df
     
     def histogram(self, x = "Predictor", y = None, is_horizontal = False, color = None, facet_col = None, facet_row = None, 
-                  bins = 20, opacity = 1, marginal = None, template = "ggplot2"):
+                  bins = 20, opacity = 1, marginal = None, template = "ggplot2", has_title = True, title = None):
         """Creates a Plotly histogram. Plotly histograms can work with both numeric and categorical data.
         
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
@@ -44,6 +44,10 @@ class Interactive_Visuals:
         
         :param str template: Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.
         
+        :param bool has_title: Optional, default True. Determines if plot has a title or not. Default title is provided if True, but can be customized with title.
+        
+        :param str title: Optional, default None. Changes title of plot from the default.
+        
         :returns: Plotly fig object
         """
         x_clean, df_clean = clean_varname(self._df, var = x)
@@ -66,17 +70,22 @@ class Interactive_Visuals:
         else:
             facet_row_clean = facet_row
 
+        if has_title:
+            if not title:
+                title = f"Histogram of {x_clean}"
+
         if is_horizontal:
-            fig = px.histogram(df_clean, y=x_clean, x = y_clean, color=color_clean, title = f"Histogram of {x_clean}",
-                            marginal = marginal, template = template, opacity = opacity, nbins=bins, facet_col = facet_col_clean,
-                              facet_row = facet_row_clean)
+            fig = px.histogram(df_clean, y=x_clean, x = y_clean, color=color_clean, title = title,
+                            marginal = marginal, template = template, opacity = opacity, 
+                            nbins=bins, facet_col = facet_col_clean, facet_row = facet_row_clean)
         else:
-            fig = px.histogram(df_clean, x=x_clean, y = y_clean, color=color_clean, title = f"Histogram of {x_clean}",
-                            marginal = marginal, template = template, opacity = opacity, nbins=bins, facet_col = facet_col_clean,
-                              facet_row = facet_row_clean)
+            fig = px.histogram(df_clean, x=x_clean, y = y_clean, color=color_clean, title = title,
+                            marginal = marginal, template = template, opacity = opacity, 
+                            nbins=bins, facet_col = facet_col_clean, facet_row = facet_row_clean)
         return fig
     
-    def barplot(self, x = "Predictor", color = None, opacity = 1, template = "ggplot2", barmode="stack", is_horizontal = False):
+    def barplot(self, x = "Predictor", color = None, opacity = 1, template = "ggplot2", 
+                has_title = True, barmode="stack", is_horizontal = False, title = None, is_percent = False):
         """Creates a Plotly bar plot. Bar plots work with categorical data. Function computes appropriate counts and percentages to create bar plots.
         
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
@@ -93,6 +102,12 @@ class Interactive_Visuals:
         
         :param str barmode: Optional, default "stack". Options: ['stack', 'group', 'overlay', 'relative']
         
+        :param bool has_title: Optional, default True. Determines if plot has a title or not. Default title is provided if True, but can be customized with title.
+        
+        :param str title: Optional, default None. Changes title of plot from the default. 
+        
+        :param bool is_percent: Optional, default False. Set true to plot a percentage-based stacked bar plot.
+        
         :returns: Plotly fig object
         """
         if color: #Produce either a stacked or grouped bar plot
@@ -103,14 +118,30 @@ class Interactive_Visuals:
             x_clean, df_clean = clean_varname(df_stack, var = x)
             color_clean, df_clean = clean_varname(df_clean, var = color)
             
-            if is_horizontal:
-                fig = px.bar(df_clean, y = x_clean, x = 'Count', 
-                             color = color_clean, template = template, barmode=barmode, 
-                         opacity = opacity, title = f"Bar plot of {x_clean} and {color_clean}")
+            if has_title:
+                if not title:
+                    title = f"Bar Plot of {x_clean} and {color_clean}"
             else:
-               fig = px.bar(df_clean, x = x_clean, y = 'Count', 
+                title = None
+                
+            if is_horizontal:
+                if is_percent:
+                    fig = px.bar(df_clean, y = x_clean, x = 'Percentage', 
+                             color = color_clean, template = template, barmode=barmode, 
+                         opacity = opacity, title = title)
+                else:
+                    fig = px.bar(df_clean, y = x_clean, x = 'Count', 
+                             color = color_clean, template = template, barmode=barmode, 
+                         opacity = opacity, title = title)
+            else:
+                if is_percent:
+                    fig = px.bar(df_clean, x = x_clean, y = 'Percentage', 
                             color = color_clean, template = template, barmode=barmode, 
-                         opacity = opacity, title = f"Bar plot of {x_clean} and {color_clean}") 
+                         opacity = opacity, title = title)
+                else:
+                    fig = px.bar(df_clean, x = x_clean, y = 'Count', 
+                            color = color_clean, template = template, barmode=barmode, 
+                         opacity = opacity, title = title) 
             
             return fig
         
@@ -121,17 +152,21 @@ class Interactive_Visuals:
            df_stack.columns = [x, 'Count', 'Percentage']
            x_clean, df_clean = clean_varname(df_stack, var = x)
            
+           if has_title:
+               if not title:
+                   title = f"Bar plot of {x_clean}"
+           
            if is_horizontal:
                fig = px.bar(df_clean, y = x_clean, x = 'Count', 
-                            template = template, title = f"Bar plot of {x_clean}")
+                            template = template, title = title)
            else:
                fig = px.bar(df_clean, x = x_clean, y = 'Count', 
-                            template = template, title = f"Bar plot of {x_clean}")
+                            template = template, title = title)
            return fig 
         
-    
     def scatterplot(self, x = "Predictor", y = "Response", color = None, jitter = False, jitter_sd = .1,
-                marg_x = None, marg_y = None, trendline = None, opacity = 1, template = "ggplot2"):
+                marg_x = None, marg_y = None, trendline = None, opacity = 1, template = "ggplot2",
+                has_title = True, title = None):
         """Creates a Plotly scatter plot of two numeric variables.
         
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
@@ -156,6 +191,10 @@ class Interactive_Visuals:
         
         :param str template: Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.
         
+        :param bool has_title: Optional, default True. Determines if plot has a title or not. Default title is provided if True, but can be customized with title.
+        
+        :param str title: Optional, default None. Changes title of plot from the default. 
+        
         :returns: Plotly fig object.
         """
         x_clean, df_clean = clean_varname(self._df, var = x)
@@ -170,7 +209,11 @@ class Interactive_Visuals:
         else:
             color_clean = color 
 
-        fig = px.scatter(df_clean, x=x_clean, y=y_clean, color=color_clean, title = "Scatter Plot of %s and %s"%(x_clean, y_clean),
+        if has_title:
+            if not title:
+                title = f"Scatter Plot of {x_clean} and {y_clean}"
+                
+        fig = px.scatter(df_clean, x=x_clean, y=y_clean, color=color_clean, title = title,
                         marginal_x = marg_x, marginal_y = marg_y, trendline = trendline, template = template, opacity = opacity)
         return fig
     
@@ -318,11 +361,14 @@ class Interactive_Visuals:
 
         return fig
 
+
 if __name__ == '__main__':    
     df = px.data.iris()
     iv = Interactive_Visuals(df)
-    plot(iv.histogram(x = "sepal_length", color = "species", facet_col = "species", marginal="box", bins = 10))
+    #plot(iv.scatterplot(x = "sepal_length", y = "sepal_width"))
+    plot(iv.histogram(x = "sepal_length", color = "species", facet_col = "species", marginal="box", bins = 10, title = "Sepal Length Faceted on Species"))
     # df = px.data.tips()
     # iv = Interactive_Visuals(df)
-    # plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True))
+    # plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True, is_percent = True))
+    
     
