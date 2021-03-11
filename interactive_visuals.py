@@ -85,7 +85,8 @@ class Interactive_Visuals:
         return fig
     
     def barplot(self, x = "Predictor", color = None, opacity = 1, template = "ggplot2", 
-                has_title = True, barmode="stack", is_horizontal = False, title = None, is_percent = False):
+                has_title = True, barmode="stack", is_horizontal = False, title = None, is_percent = False,
+                show_num = False):
         """Creates a Plotly bar plot. Bar plots work with categorical data. Function computes appropriate counts and percentages to create bar plots.
         
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
@@ -108,6 +109,8 @@ class Interactive_Visuals:
         
         :param bool is_percent: Optional, default False. Set true to plot a percentage-based stacked bar plot.
         
+        :param bool show_num: Optional, default False. Show percentages on stacked bar plot.
+        
         :returns: Plotly fig object
         """
         if color: #Produce either a stacked or grouped bar plot
@@ -115,6 +118,8 @@ class Interactive_Visuals:
             df_stack['Percentage'] = self._df.groupby([x, color]).size().groupby(level = 0).apply(lambda 
         x:100 * x/float(x.sum())).values
             df_stack.columns = [x, color, 'Count', 'Percentage']
+            df_stack['Percentage'] = round(df_stack['Percentage'], 2)
+            
             x_clean, df_clean = clean_varname(df_stack, var = x)
             color_clean, df_clean = clean_varname(df_clean, var = color)
             
@@ -123,25 +128,47 @@ class Interactive_Visuals:
                     title = f"Bar Plot of {x_clean} and {color_clean}"
             else:
                 title = None
+             
                 
+            # 8 different variations for how this graph can appear:
             if is_horizontal:
                 if is_percent:
-                    fig = px.bar(df_clean, y = x_clean, x = 'Percentage', 
-                             color = color_clean, template = template, barmode=barmode, 
-                         opacity = opacity, title = title)
+                    if show_num: #Show percentages on stacked bar graph
+                        fig = px.bar(df_clean, y = x_clean, x = 'Percentage', 
+                                 color = color_clean, template = template, barmode=barmode, 
+                             opacity = opacity, title = title, text = df_clean['Percentage'])
+                    else:
+                        fig = px.bar(df_clean, y = x_clean, x = 'Percentage', 
+                                 color = color_clean, template = template, barmode=barmode, 
+                             opacity = opacity, title = title)
                 else:
-                    fig = px.bar(df_clean, y = x_clean, x = 'Count', 
+                    if show_num: #Show counts on stacked bar graph:
+                        fig = px.bar(df_clean, y = x_clean, x = 'Count', 
                              color = color_clean, template = template, barmode=barmode, 
-                         opacity = opacity, title = title)
+                         opacity = opacity, title = title, text = df_clean['Count'])
+                    else:
+                        fig = px.bar(df_clean, y = x_clean, x = 'Count', 
+                                 color = color_clean, template = template, barmode=barmode, 
+                             opacity = opacity, title = title)
             else:
                 if is_percent:
-                    fig = px.bar(df_clean, x = x_clean, y = 'Percentage', 
-                            color = color_clean, template = template, barmode=barmode, 
-                         opacity = opacity, title = title)
+                    if show_num:
+                        fig = px.bar(df_clean, x = x_clean, y = 'Percentage', 
+                                color = color_clean, template = template, barmode=barmode, 
+                             opacity = opacity, title = title, text = df_clean['Percentage'])
+                    else:
+                        fig = px.bar(df_clean, x = x_clean, y = 'Percentage', 
+                                color = color_clean, template = template, barmode=barmode, 
+                             opacity = opacity, title = title)
                 else:
-                    fig = px.bar(df_clean, x = x_clean, y = 'Count', 
+                    if show_num:
+                        fig = px.bar(df_clean, x = x_clean, y = 'Count', 
                             color = color_clean, template = template, barmode=barmode, 
-                         opacity = opacity, title = title) 
+                         opacity = opacity, title = title, text = df_clean['Count'])
+                    else:
+                        fig = px.bar(df_clean, x = x_clean, y = 'Count', 
+                                color = color_clean, template = template, barmode=barmode, 
+                             opacity = opacity, title = title) 
             
             return fig
         
@@ -217,7 +244,8 @@ class Interactive_Visuals:
                         marginal_x = marg_x, marginal_y = marg_y, trendline = trendline, template = template, opacity = opacity)
         return fig
     
-    def linechart(self, x = "Predictor", y = "Response", color = None, template = "ggplot2"):
+    def linechart(self, x = "Predictor", y = "Response", color = None, template = "ggplot2",
+                  has_title = True, title = None):
         """Creates a Plotly line chart of a numeric and date variable
         
         :param Dataframe df: Required. A Pandas dataframe for plotting the data. 
@@ -230,8 +258,14 @@ class Interactive_Visuals:
         
         :param str template: Optional, default ggplot2 (chosen to align with R visualizations). Changes template of plot from default Plotly to another format.
         
+        :param bool has_title: Optional, default True. Determines if plot has a title or not. Default title is provided if True, but can be customized with title.
+        
+        :param str title: Optional, default None. Changes title of plot from the default.
+        
         :returns: Plotly fig object.
         """
+        
+        
         x_clean, df_clean = clean_varname(self._df, var = x)
         y_clean, df_clean = clean_varname(df_clean, var = y)
 
@@ -240,7 +274,11 @@ class Interactive_Visuals:
         else:
             color_clean = color
 
-        fig = px.line(df_clean, x=x_clean, y=y_clean, color = color_clean, template = template, title = "Time Series of %s"%(y_clean))
+        if has_title:
+            if not title:
+                title = f"Time Series of {y_clean}"
+
+        fig = px.line(df_clean, x=x_clean, y=y_clean, color = color_clean, template = template, title = title)
 
         return fig
     
@@ -363,12 +401,14 @@ class Interactive_Visuals:
 
 
 if __name__ == '__main__':    
-    df = px.data.iris()
-    iv = Interactive_Visuals(df)
+    #df = px.data.iris()
+    #iv = Interactive_Visuals(df)
     #plot(iv.scatterplot(x = "sepal_length", y = "sepal_width"))
-    plot(iv.histogram(x = "sepal_length", color = "species", facet_col = "species", marginal="box", bins = 10, title = "Sepal Length Faceted on Species"))
+    #plot(iv.histogram(x = "sepal_length", color = "species", facet_col = "species", marginal="box", bins = 10, title = "Sepal Length Faceted on Species"))
     # df = px.data.tips()
     # iv = Interactive_Visuals(df)
-    # plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True, is_percent = True))
-    
+    # plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True, is_percent = True, show_num = True))
+    df = px.data.gapminder().query("country=='Canada'")
+    iv = Interactive_Visuals(df)
+    plot(iv.linechart(x = "year", y = "lifeExp"))
     

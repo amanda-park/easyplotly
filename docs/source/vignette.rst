@@ -292,3 +292,16 @@ And bar plots can be plotted based on Percentages and not Counts:
 
 .. image:: images/Barplot_Percent.png
    :width: 800
+   
+Add Actual Values Onto Plots
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If graphs are going into PowerPoints, actual values can be added to graphs for both count and percentage cases (percents automatically round to two decimal places):
+
+.. code-block:: Python
+
+  plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True, 
+  is_percent = True, show_num = True))
+
+.. image:: images/Barplot_Values.png
+   :width: 800

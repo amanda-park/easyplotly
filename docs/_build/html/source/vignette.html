@@ -108,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#grouped-bar-plots">Grouped Bar Plots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#horizontal-bars">Horizontal Bars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#plot-on-percentages">Plot on Percentages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-actual-values-onto-plots">Add Actual Values Onto Plots</a></li>
 </ul>
 </li>
 </ul>
@@ -381,6 +382,15 @@ download the following via pip install:</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/Barplot_Percent.png"><img alt="../_images/Barplot_Percent.png" src="../_images/Barplot_Percent.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="add-actual-values-onto-plots">
+<h3>Add Actual Values Onto Plots<a class="headerlink" href="#add-actual-values-onto-plots" title="Permalink to this headline">¶</a></h3>
+<p>If graphs are going into PowerPoints, actual values can be added to graphs for both count and percentage cases (percents automatically round to two decimal places):</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">iv</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;smoker&quot;</span><span class="p">,</span> <span class="n">is_horizontal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="n">is_percent</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show_num</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Barplot_Values.png"><img alt="../_images/Barplot_Values.png" src="../_images/Barplot_Values.png" style="width: 800px;" /></a>
 </div>
 </div>
 </div>
