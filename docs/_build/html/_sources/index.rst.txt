@@ -9,10 +9,9 @@ Welcome to Interactive Visualizations with Plotly's documentation!
 .. toctree::
    :maxdepth: 4
 
-   source/vignette
    source/interactive_visuals
    source/utils
-   
+   source/vignette
 
 Indices and tables
 ==================

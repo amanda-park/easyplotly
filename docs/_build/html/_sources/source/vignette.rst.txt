@@ -66,7 +66,7 @@ To obtain a very basic scatterplot, run this:
    :width: 800
 
 Marginal Scatterplot
-***********************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To create a scatterplot with a marginal box plot, run the following:
 
@@ -80,7 +80,7 @@ To create a scatterplot with a marginal box plot, run the following:
 (Note that histograms or violin plots can also be plotted in the margins.)
 
 Change Colors Based on Another Variable
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Scatterplots can be labeled based on a factor variable:
 
@@ -103,7 +103,7 @@ Or a numeric variable:
    :width: 800
 
 Prettify with Jitter and Opacity
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If points overlap, jitter can be applied. If the default jitter is unsatisfactory, the value can be changed with jitter_sd:
 
@@ -127,7 +127,7 @@ Opacity can also be lowered for points closeby to be more easily seen:
    :width: 800
 
 Add Trendlines
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Trendlines can also be added via "ols":
 
@@ -154,7 +154,7 @@ A basic histogram can be created by using a numeric variable:
    :width: 800
 
 Facet on Categorical Variable
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This histogram can be split based on a categorical variable:
 
@@ -166,7 +166,7 @@ This histogram can be split based on a categorical variable:
    :width: 800
 
 Show Marginal Distribution
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The marginal distributions can be shown above the histogram:
 
@@ -178,7 +178,7 @@ The marginal distributions can be shown above the histogram:
    :width: 800
 
 Facet Plots
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 And the plots can be faceted either vertically or horizontally for readability:
 
@@ -190,7 +190,7 @@ And the plots can be faceted either vertically or horizontally for readability:
    :width: 800
 
 Customize Bins
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The number of bins is also customizable:
 
@@ -203,7 +203,7 @@ The number of bins is also customizable:
    :width: 800
 
 Titles
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Titles can be removed if disruptive:
 
@@ -246,7 +246,7 @@ A basic bar plot can be created by using a categorical variable:
    :width: 800
 
 Stacked Bar Plots
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Stacked bar plots can be created by setting a categorical variable to color:
 
@@ -258,7 +258,7 @@ Stacked bar plots can be created by setting a categorical variable to color:
    :width: 800
 
 Grouped Bar Plots
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 These can also be set as grouped bar plots:
 
@@ -270,7 +270,7 @@ These can also be set as grouped bar plots:
    :width: 800
 
 Horizontal Bars
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Bars can also be set horizontally:
 
@@ -282,7 +282,7 @@ Bars can also be set horizontally:
    :width: 800
 
 Plot on Percentages
-******************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 And bar plots can be plotted based on Percentages and not Counts:
 
