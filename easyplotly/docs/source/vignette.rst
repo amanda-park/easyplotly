@@ -1,6 +1,8 @@
 Vignette / Tutorial
 ======================
 
+This tutorial will show you the basic things that can be done with this Plotly repo with the current assortment of charts available.
+
 .. note::
    Before you begin, you need to have certain packages installed. Be sure to 
    download the following via pip install:
@@ -11,14 +13,22 @@ Vignette / Tutorial
    * plotly.express
    * plotly.graph_objects
    * plotly.offline
+   
+Then be sure to:
 
-This tutorial will show you the basic things that can be done with this Plotly repo with the current assortment of charts available.
+* Download (or clone) the file from Bitbucket located here: https://bitbucket.spectrum-health.org:7991/stash/projects/QSE/repos/easyplotly/browse
+* Navigate to the root directory of the downloaded file
+* Run the following in your Anaconda terminal:
+ 
+.. code-block:: Python
 
-First, you will want to import the following:
+  python setup.py develop
+
+That will install the package onto your local machine. To use, simply import the following:
 
 .. code-block:: Python
 
-  from interactive_visuals import *
+  from easyplotly import Interactive_Visuals
 
 =============
 Control Chart

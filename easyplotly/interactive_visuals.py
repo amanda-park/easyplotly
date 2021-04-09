@@ -282,6 +282,97 @@ class Interactive_Visuals:
 
         return fig
     
+    
+    def forecast_CV_surge(self, title = "Cross-Validation", value_name = "Actuals",
+                 upper_bound_name = "Worst-Case", lower_bound_name = "Best-Case",
+                 upper_bound_color = "red", lower_bound_color = "blue", predicted_color = "orange",
+                 fill_color_and_opacity = 'rgba(50, 50, 50, .2)', roll_avg = False, roll_avg_num = 7):
+        """Creates a Plotly line chart of a metric alongside bounds and predicted values. Can be used for either cross-validation or forecasting.
+        
+        :param Dataframe df: Required. Data frame fed in should have these columns:
+            
+            * Date (as index)
+            * Values (known, not forecasted)
+            * Predicted (forecasted expected values)
+            * UB (upper bound; ex: prediction interval 95%)
+            * LB (lower bound)
+            
+        :param str title: A string that will define the title of your graph. Default is "Cross-Validation".
+        
+        :param str value_name: A string that represent the name of the values in the graph. Default is "Actuals".
+        
+        :param str upper_bound_name: A string that represents the name of the upper bound in the graph. Default is "Worst-Case".
+        
+        :param str lower_bound_name: A string that represents the name of the lower bound in the graph. Default is "Best-Case".
+        
+        :param str lower_bound_color: A string that represents the color of the lower bound in the graph. Default is "blue".
+        
+        :param str upper_bound_color: A string that represents the color of the upper bound in the graph. Default is "red".
+        
+        :param str predicted_color: A string that represents the color of the predicted linke in the graph. Default is "orange".
+        
+        :param str fill_color_and_opacity: A string that represents the color and opacity of the fill. Default is 'rgba(50,50,50.2)', which creates a light gray tint between the lower and upper bounds. To make opacity clear and have no shading appear, set the final value in rgba to be 0.
+        
+        :param bool roll_avg: Boolean to determine if need to apply rolling average to data.
+        
+        :param int roll_avg_num: Integer indicating frequency to apply rolling average on. Default is 7.
+        
+        :returns: Plotly fig object.
+        """
+        
+        if roll_avg:
+            self._df['Values'] = self._df['Values'].rolling(window=roll_avg_num, closed = 'left').mean()
+            self._df['Predicted'] = self._df['Predicted'].rolling(window=roll_avg_num, closed = 'left').mean()
+            self._df['UB'] = self._df['UB'].rolling(window=roll_avg_num, closed = 'left').mean()
+            self._df['LB'] = self._df['LB'].rolling(window=roll_avg_num, closed = 'left').mean()
+        
+        fig = go.Figure(
+            data = go.Scatter(
+                name=value_name,
+                mode="markers+lines", 
+                x=self._df.index, 
+                y=self._df["Values"],
+                marker_symbol="circle", 
+                marker_size = 6,
+                line_color = "black"
+            ),
+            layout_title_text = title,
+            layout_template = "ggplot2"
+        )
+        
+        fig.add_trace(go.Scatter(
+            name="Predicted",
+            mode="lines", 
+            x=self._df.index, 
+            y=self._df["Predicted"], 
+            line_color = predicted_color,
+            line_width = 2
+        ))
+        
+        fig.add_trace(go.Scatter(
+            name=upper_bound_name,
+            mode="lines", 
+            x=self._df.index, 
+            y=self._df["UB"], 
+            line_color = upper_bound_color,
+            line_width = 2
+        ))
+        
+        fig.add_trace(go.Scatter(
+            name=lower_bound_name,
+            mode="lines", 
+            x=self._df.index, 
+            y=self._df["LB"], 
+            line_color = lower_bound_color,
+            fill = 'tonexty',
+            fillcolor = fill_color_and_opacity,
+            line_width = 2
+        ))
+        
+        
+        return fig
+        
+    
     def control_chart_ADTK(self, title = "Control Chart Example", value_name = "Actuals"):
         """Creates a Plotly control chart of a metric measured over time. 
         
@@ -400,6 +491,7 @@ class Interactive_Visuals:
         return fig
 
 
+
 if __name__ == '__main__':    
     #df = px.data.iris()
     #iv = Interactive_Visuals(df)
@@ -408,7 +500,29 @@ if __name__ == '__main__':
     # df = px.data.tips()
     # iv = Interactive_Visuals(df)
     # plot(iv.barplot(x = "sex", color = "smoker", is_horizontal = True, is_percent = True, show_num = True))
-    df = px.data.gapminder().query("country=='Canada'")
-    iv = Interactive_Visuals(df)
-    plot(iv.linechart(x = "year", y = "lifeExp"))
+    # df = px.data.gapminder().query("country=='Canada'")
+    # iv = Interactive_Visuals(df)
+    # plot(iv.linechart(x = "year", y = "lifeExp"))
+    # df = pd.DataFrame(dict(
+    #     Date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
+    #     Values=[1,2,3,1, None, None, None],
+    #     Predicted = [None,None,None,None,2,2,2],
+    #     UB = [None,None,None,None,3,3,3],
+    #     LB = [None,None,None,None,1,1,1]
+    # ))
+    # df = pd.DataFrame(dict(
+    #     Date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10", "2020-07-10"],
+    #     Values=[1,2,3,1,2,4, 5],
+    #     Predicted = [2,2,2,2,2,2,2],
+    #     UB = [3,3,3,3,3,3,3],
+    #     LB = [1,1,1,1,1,1,1]))
     
+    # #Pandas set date to index col (will be how ingested from ADTK)
+    # df = df.set_index("Date")
+    # iv = Interactive_Visuals(df)
+    # plot(iv.surge_forecast_CV(title = "CV Test"))
+    
+    df = pd.read_csv("test.csv")
+    df = df.set_index("Date")
+    iv = Interactive_Visuals(df)
+    plot(iv.surge_forecast_CV(title = "Forecast", dates_as_month = True))

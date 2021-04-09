@@ -223,6 +223,40 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="interactive_visuals.Interactive_Visuals.forecast_CV_surge">
+<code class="sig-name descname"><span class="pre">forecast_CV_surge</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Cross-Validation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Actuals'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Worst-Case'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Best-Case'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicted_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'orange'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_color_and_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rgba(50,</span> <span class="pre">50,</span> <span class="pre">50,</span> <span class="pre">.2)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roll_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roll_avg_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interactive_visuals.Interactive_Visuals.forecast_CV_surge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Plotly line chart of a metric alongside bounds and predicted values. Can be used for either cross-validation or forecasting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>Dataframe</em>) – <p>Required. Data frame fed in should have these columns:</p>
+<ul>
+<li><p>Date (as index)</p></li>
+<li><p>Values (known, not forecasted)</p></li>
+<li><p>Predicted (forecasted expected values)</p></li>
+<li><p>UB (upper bound; ex: prediction interval 95%)</p></li>
+<li><p>LB (lower bound)</p></li>
+</ul>
+</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – A string that will define the title of your graph. Default is “Cross-Validation”.</p></li>
+<li><p><strong>value_name</strong> (<em>str</em>) – A string that represent the name of the values in the graph. Default is “Actuals”.</p></li>
+<li><p><strong>upper_bound_name</strong> (<em>str</em>) – A string that represents the name of the upper bound in the graph. Default is “Worst-Case”.</p></li>
+<li><p><strong>lower_bound_name</strong> (<em>str</em>) – A string that represents the name of the lower bound in the graph. Default is “Best-Case”.</p></li>
+<li><p><strong>lower_bound_color</strong> (<em>str</em>) – A string that represents the color of the lower bound in the graph. Default is “blue”.</p></li>
+<li><p><strong>upper_bound_color</strong> (<em>str</em>) – A string that represents the color of the upper bound in the graph. Default is “red”.</p></li>
+<li><p><strong>predicted_color</strong> (<em>str</em>) – A string that represents the color of the predicted linke in the graph. Default is “orange”.</p></li>
+<li><p><strong>fill_color_and_opacity</strong> (<em>str</em>) – A string that represents the color and opacity of the fill. Default is ‘rgba(50,50,50.2)’, which creates a light gray tint between the lower and upper bounds. To make opacity clear and have no shading appear, set the final value in rgba to be 0.</p></li>
+<li><p><strong>roll_avg</strong> (<em>bool</em>) – Boolean to determine if need to apply rolling average to data.</p></li>
+<li><p><strong>roll_avg_num</strong> (<em>int</em>) – Integer indicating frequency to apply rolling average on. Default is 7.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Plotly fig object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="interactive_visuals.Interactive_Visuals.histogram">
 <code class="sig-name descname"><span class="pre">histogram</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Predictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_horizontal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marginal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ggplot2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interactive_visuals.Interactive_Visuals.histogram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a Plotly histogram. Plotly histograms can work with both numeric and categorical data.</p>
